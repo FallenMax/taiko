@@ -291,7 +291,7 @@ module.exports.openBrowser = async (
     const BrowserFetcher = require('./browserFetcher');
     const browserFetcher = new BrowserFetcher();
     const chromeExecutable = chromePath;
-    console.log('chromeExecutable ', chromeExecutable);
+    console.log('using Chrome from: ', chromeExecutable);
     options = setBrowserOptions(options);
     browserMode = options.headless;
     let args = [

@@ -3,6 +3,7 @@ const networkHandler = require('./handlers/networkHandler');
 const pageHandler = require('./handlers/pageHandler');
 const runtimeHandler = require('./handlers/runtimeHandler');
 const { defaultConfig } = require('./config');
+const { logWait } = require('./logger');
 
 const doActionAwaitingNavigation = async (options, action) => {
   if (!options.waitForNavigation) {
@@ -13,11 +14,11 @@ const doActionAwaitingNavigation = async (options, action) => {
   options.navigationTimeout = options.navigationTimeout || defaultConfig.navigationTimeout;
 
   try {
-    console.log('wait for action');
+    logWait('wait for action');
     await action();
-    console.log('wait for navigation');
+    logWait('wait for navigation');
     await waitForNavigation(options.navigationTimeout, []);
-    console.log('wait complete');
+    logWait('wait complete');
   } catch (e) {
     if (e === 'Timedout') {
       throw new Error(
