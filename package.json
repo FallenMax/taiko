@@ -4,7 +4,8 @@
   "description": "A forked version of taiko",
   "main": "bin/taiko.js",
   "bin": {
-    "taiko": "bin/taiko.js"
+    "taiko": "bin/taiko.js",
+    "tiko": "bin/taiko.js"
   },
   "scripts": {
     "doc": "documentation build lib/taiko.js -f md --shallow -o docs/index.md --markdown-toc=false && node docs/setup.js",
