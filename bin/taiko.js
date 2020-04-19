@@ -75,6 +75,10 @@ function isCLICommand() {
 }
 
 if (isTaikoRunner(processArgv[1])) {
+  if (isCLICommand() && !seekingForHelp(processArgv)) {
+    // append taiko sub-command as if the user has executed <taiko taiko script.js or just taiko taiko>
+    processArgv.splice(2, 0, 'taiko');
+  }
   let program = new Command('taiko');
   program
     .arguments('<cmd> [fileName]')
