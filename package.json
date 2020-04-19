@@ -1,14 +1,14 @@
 {
-  "name": "taiko",
+  "name": "tiko",
   "version": "1.0.7",
-  "description": "Taiko is a Node.js library for automating Chromium based browsers",
+  "description": "A forked version of taiko",
   "main": "bin/taiko.js",
   "bin": {
     "taiko": "bin/taiko.js"
   },
   "scripts": {
     "doc": "documentation build lib/taiko.js -f md --shallow -o docs/index.md --markdown-toc=false && node docs/setup.js",
-    "build": "tsc -p tsconfig.json && node lib/documentation.js",
+    "build": "rm -rf tmp lib; tsc -p tsconfig.json && node lib/documentation.js",
     "watch": "tsc -p tsconfig.json --watch",
     "test:api": "node test/unit-tests/taiko-test.js",
     "examples": "cd examples && npm install && npm test",
