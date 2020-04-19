@@ -7,7 +7,6 @@ const repl = require('../lib/repl/repl');
 const { isTaikoRunner } = require('../lib/util');
 const devices = require('../lib/data/devices').default;
 const NETWORK_TYPES = Object.keys(require('../lib/data/networkConditions'));
-const { getExecutablePlugins } = require('../lib/plugins');
 const processArgv = process.argv;
 let repl_mode = false;
 let taiko;
@@ -34,8 +33,8 @@ process.on('unhandledRejection', exitOnUnhandledFailures);
 process.on('uncaughtException', exitOnUnhandledFailures);
 
 function validate(file) {
-  if (!file.endsWith('.js')) {
-    console.log('Invalid file extension. Only javascript files are accepted.');
+  if (!/\.(js|ts)x?$/.test(file)) {
+    console.log('Invalid file extension. Only javascript/typescript files are accepted.');
     process.exit(1);
   }
   if (!fs.existsSync(file)) {
@@ -52,11 +51,6 @@ function setupEmulateDevice(device) {
     console.log(`Available devices: ${Object.keys(devices).join(', ')}`);
     process.exit(1);
   }
-}
-
-function setPluginNameInEnv(pluginName) {
-  process.env.TAIKO_PLUGIN = pluginName;
-  return pluginName;
 }
 
 function setEmulatedNetwork(networkType) {
@@ -76,31 +70,11 @@ function seekingForHelp(args) {
   return ['-h', '--help'].some((arg) => args.includes(arg));
 }
 
-function registerSubcommandForPlugins(program, plugins) {
-  Object.keys(plugins).forEach((pluginName) => {
-    program
-      .command(`${pluginName} [options...]`)
-      .allowUnknownOption(true)
-      .action((options, cmd) => {
-        let plugin = require(plugins[cmd.name()]);
-        plugin.exec(options);
-      });
-  });
-}
-
 function isCLICommand() {
   return require.main === module;
 }
 
 if (isTaikoRunner(processArgv[1])) {
-  let plugins = getExecutablePlugins();
-  if (
-    isCLICommand() &&
-    !(seekingForHelp(processArgv) || Object.prototype.hasOwnProperty.call(plugins, processArgv[2]))
-  ) {
-    // append taiko sub-command as if the user has executed <taiko taiko script.js or just taiko taiko>
-    processArgv.splice(2, 0, 'taiko');
-  }
   let program = new Command('taiko');
   program
     .arguments('<cmd> [fileName]')
@@ -126,7 +100,6 @@ if (isTaikoRunner(processArgv[1])) {
       `Allow to simulate network. Available options are ${NETWORK_TYPES.join(', ')}`,
       setEmulatedNetwork,
     )
-    .option('--plugin <plugin1,plugin2...>', 'Load the taiko plugin.', setPluginNameInEnv)
     .option('--no-log', 'Disable log output of taiko', setDisableLogout)
     .action(function (_, fileName, cmd) {
       taiko = require('../lib/taiko');
@@ -155,7 +128,6 @@ if (isTaikoRunner(processArgv[1])) {
         repl.initialize(taiko);
       }
     });
-  registerSubcommandForPlugins(program, plugins);
   program.unknownOption = (option) => {
     console.error('error: unknown option `%s', option);
     program.outputHelp();

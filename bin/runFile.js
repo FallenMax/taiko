@@ -1,6 +1,9 @@
 const path = require('path');
 const util = require('util');
 const recorder = require('../recorder');
+require('ts-node').register({
+  /* options */
+});
 
 const { removeQuotes, symbols } = require('../lib/util');
 module.exports = async (taiko, file, observe, observeTime, continueRepl) => {

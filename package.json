@@ -7,17 +7,17 @@
     "taiko": "bin/taiko.js"
   },
   "scripts": {
-    "lint": "eslint --fix .",
     "doc": "documentation build lib/taiko.js -f md --shallow -o docs/index.md --markdown-toc=false && node docs/setup.js",
+    "build": "tsc -p tsconfig.json && node lib/documentation.js",
+    "watch": "tsc -p tsconfig.json --watch",
     "test:api": "node test/unit-tests/taiko-test.js",
     "examples": "cd examples && npm install && npm test",
     "test:unit:silent": "mocha 'test/unit-tests/**/*.test.js' --timeout 6000 -R dot",
     "test:unit": "mocha 'test/unit-tests/**/*.test.js' --timeout 6000",
     "test": "npm run test:api && npm run test:unit:silent",
     "test-functional": "cd test/functional-tests && npm install && npm test",
-    "install": "node lib/install.js",
-    "update-json-doc": "node build/updateJsonDoc.js",
-    "postinstall": "node lib/documentation.js"
+    "install": "yarn run build && node lib/install.js",
+    "update-json-doc": "node build/updateJsonDoc.js"
   },
   "repository": {
     "type": "git",
@@ -39,12 +39,6 @@
     "chromium_revision": "756035",
     "chromium_version": "83.0.4103.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && npm run test:api",
-      "pre-push": "npm test"
-    }
-  },
   "author": "getgauge",
   "license": "MIT",
   "dependencies": {
@@ -65,19 +59,17 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "documentation": "^12.2.0",
-    "eslint": "^6.7.2",
-    "eslint-config-airbnb": "^18.1.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-jest": "^23.1.1",
-    "eslint-plugin-mocha": "^6.2.2",
-    "eslint-plugin-prettier": "^3.1.2",
+    "eslint": "^6.8.0",
     "handlebars": "^4.7.6",
-    "husky": "^4.2.3",
+    "jest": "^25.3.0",
     "lint-staged": "^10.0.9",
     "marked": "^0.8.2",
     "mocha": "^7.1.1",
     "prettier": "^2.0.1",
     "rewire": "^5.0.0",
-    "sinon": "^9.0.1"
+    "sinon": "^9.0.1",
+    "ts-jest": "^25.3.1",
+    "ts-node": "^8.8.2",
+    "typescript": "^3.8.3"
   }
 }
