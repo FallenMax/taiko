@@ -1,6 +1,6 @@
 {
   "name": "tiko",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A forked version of taiko",
   "main": "bin/taiko.js",
   "bin": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "doc": "documentation build lib/taiko.js -f md --shallow -o docs/index.md --markdown-toc=false && node docs/setup.js",
-    "build": "rm -rf tmp lib; tsc -p tsconfig.json && node lib/documentation.js",
+    "build": "rm -rf tmp lib; tsc -p tsconfig.json",
     "watch": "tsc -p tsconfig.json --watch",
     "test:api": "node test/unit-tests/taiko-test.js",
     "examples": "cd examples && npm install && npm test",
@@ -17,7 +17,8 @@
     "test:unit": "mocha 'test/unit-tests/**/*.test.js' --timeout 6000",
     "test": "npm run test:api && npm run test:unit:silent",
     "test-functional": "cd test/functional-tests && npm install && npm test",
-    "install": "yarn run build && node lib/install.js",
+    "install": "node lib/documentation.js && node lib/install.js",
+    "prepublishOnly": "yarn run build",
     "update-json-doc": "node build/updateJsonDoc.js"
   },
   "repository": {
