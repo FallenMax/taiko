@@ -1,6 +1,6 @@
 {
   "name": "tiko",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A forked version of taiko",
   "main": "bin/taiko.js",
   "bin": {
