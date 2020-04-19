@@ -29,6 +29,7 @@ const emulationHandler = require('./handlers/emulationHandler');
 const { logEvent } = require('./logger');
 const { BrowserContext } = require('./browserContext');
 const keyDefinitions = require('./data/USKeyboardLayout');
+const chromePath = require('chrome-location');
 
 const {
   setConfig,
@@ -289,7 +290,8 @@ module.exports.openBrowser = async (
   } else {
     const BrowserFetcher = require('./browserFetcher');
     const browserFetcher = new BrowserFetcher();
-    const chromeExecutable = browserFetcher.getExecutablePath();
+    const chromeExecutable = chromePath;
+    console.log('chromeExecutable ', chromeExecutable);
     options = setBrowserOptions(options);
     browserMode = options.headless;
     let args = [

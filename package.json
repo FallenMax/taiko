@@ -17,7 +17,7 @@
     "test:unit": "mocha 'test/unit-tests/**/*.test.js' --timeout 6000",
     "test": "npm run test:api && npm run test:unit:silent",
     "test-functional": "cd test/functional-tests && npm install && npm test",
-    "install": "node lib/documentation.js && node lib/install.js",
+    "install": "node lib/documentation.js",
     "prepublishOnly": "yarn run build",
     "update-json-doc": "node build/updateJsonDoc.js"
   },
@@ -45,6 +45,7 @@
   "license": "MIT",
   "dependencies": {
     "babylon": "^6.18.0",
+    "chrome-location": "^1.2.1",
     "chrome-remote-interface": "^0.28.1",
     "commander": "^5.0.0",
     "debug": "^4.1.1",
