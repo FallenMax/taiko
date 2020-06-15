@@ -162,6 +162,63 @@ export const click = wrapPageAction(
   },
 );
 
+export const doubleClick = wrapPageAction(
+  async (
+    selector: Selector,
+    options?: ClickOptions | RelativeSearchElement,
+    ...relativeSelectors: RelativeSearchElement[]
+  ) => {
+    const _options = options && !isRelativeSearchElement(options) ? options : ({} as ClickOptions);
+    const { button = 'left' } = _options || {};
+    const _relativeSelectors = [options, ...relativeSelectors].filter(isRelativeSearchElement);
+    const elems = await select(selector, _relativeSelectors).elements();
+    for (const el of elems) {
+      await scrollTo(select(el));
+      const { x, y } = await domHandler.boundingBoxCenter(el.get());
+      if (await evaluate(el, isElementAtPointOrChild)) {
+        await highlight(el);
+        const input = getInput();
+        await input.dispatchMouseEvent({
+          type: 'mouseMoved',
+          x,
+          y,
+          clickCount: 1,
+        });
+        await input.dispatchMouseEvent({
+          type: 'mousePressed',
+          x,
+          y,
+          button,
+          clickCount: 1,
+        });
+        await input.dispatchMouseEvent({
+          type: 'mouseReleased',
+          x,
+          y,
+          button,
+          clickCount: 1,
+        });
+        await input.dispatchMouseEvent({
+          type: 'mousePressed',
+          x,
+          y,
+          button,
+          clickCount: 1,
+        });
+        await input.dispatchMouseEvent({
+          type: 'mouseReleased',
+          x,
+          y,
+          button,
+          clickCount: 1,
+        });
+        return;
+      }
+    }
+    throw new Error('no clickable elements');
+  },
+);
+
 export const press = wrapPageAction(async (keys: string | string[]) => {
   let _keys = ([] as string[]).concat(keys);
   for (let i = 0; i < _keys.length; i++) {
