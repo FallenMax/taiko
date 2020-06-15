@@ -1154,6 +1154,7 @@ module.exports.title = async () => {
 };
 
 module.exports.click = ts.withEmittingSuccess(ts.click);
+module.exports.doubleClick = ts.withEmittingSuccess(ts.doubleClick);
 module.exports.hover = ts.withEmittingSuccess(ts.hover);
 module.exports.focus = ts.withEmittingSuccess(ts.focus);
 module.exports.write = ts.withEmittingSuccess(ts.write);
